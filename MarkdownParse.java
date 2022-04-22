@@ -13,19 +13,22 @@ public class MarkdownParse {
         int currentIndex = 0;
 
         while(currentIndex < markdown.length()) {
-            if(markdown.charAt(currentIndex) == '!' && markdown.charAt(currentIndex+1) =='['){
-                int nextCParen = markdown.indexOf(")",currentIndex);
-                currentIndex = nextCParen;
-            }
+            int exclamation = -1;
+            exclamation = markdown.indexOf("!");
             int openBracket = markdown.indexOf("[", currentIndex);
             if(openBracket==-1){
                 break;
             }
             int closeBracket = markdown.indexOf("]", openBracket);
             int openParen = markdown.indexOf("(", closeBracket);
+            if(openParen==-1){
+                break;
+            }
             int closeParen = markdown.indexOf(")", openParen);
             
-            toReturn.add(markdown.substring(openParen + 1, closeParen));
+            if(exclamation == -1 ||  exclamation != openBracket - 1){
+                toReturn.add(markdown.substring(openParen + 1, closeParen));
+            }
             currentIndex = closeParen + 1;
             
         }
